@@ -4,6 +4,8 @@
   "description": "App for subscribing to practices",
   "main": "server/index.js",
   "scripts": {
+    "start": "parcel frontend/index.html",
+    "build": "parcel build frontend/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -11,5 +13,8 @@
     "WAVE"
   ],
   "author": "Jorn Hoofwijk",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
 }
