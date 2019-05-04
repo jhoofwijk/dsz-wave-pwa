@@ -25,3 +25,11 @@ This app is focussed on members of DSZ WAVE. You cannot subscribe if you are no 
 4. Competitions
     1. Parse results from competitions and summarize personal records
     2. Parse 'programmaboekjes' and keep track of what heat you have to swim
+
+
+# Running
+
+In order to run the app, first start the functions using 
+`npm run start:lambda`
+
+Then run the app using `npm run start:app`

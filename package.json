@@ -4,16 +4,15 @@
   "description": "App for subscribing to practices",
   "main": "server/index.js",
   "scripts": {
-    "start:app": "parcel frontend/index.html",
+    "start:app": "node server.js",
     "start:lambda": "netlify-lambda serve src/lambda",
     "build": "run-p build:**",
-    "build:app": "parcel build frontend/index.html",
+    "build:app": "parcel build src/index.html",
     "build:lambda": "netlify-lambda build src/lambda",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "DSZ",
-    "WAVE"
+    "DSZ WAVE",
   ],
   "author": "Jorn Hoofwijk",
   "license": "ISC",
