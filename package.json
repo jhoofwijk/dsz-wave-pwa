@@ -4,8 +4,11 @@
   "description": "App for subscribing to practices",
   "main": "server/index.js",
   "scripts": {
-    "start": "parcel frontend/index.html",
-    "build": "parcel build frontend/index.html",
+    "start:app": "parcel frontend/index.html",
+    "start:lambda": "netlify-lambda serve src/lambda",
+    "build": "run-p build:**",
+    "build:app": "parcel build frontend/index.html",
+    "build:lambda": "netlify-lambda build src/lambda",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +18,10 @@
   "author": "Jorn Hoofwijk",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
+    "http-proxy-middleware": "^0.19.1",
+    "netlify-lambda": "^1.4.7",
+    "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.3"
   }
 }
