@@ -1,0 +1,15 @@
+{
+  "name": "wave-app",
+  "version": "0.1.0",
+  "description": "App for subscribing to practices",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "DSZ",
+    "WAVE"
+  ],
+  "author": "Jorn Hoofwijk",
+  "license": "ISC"
+}
