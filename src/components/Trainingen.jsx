@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import Training from './Training';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default function Trainingen(props) {
     const [practices, setPractices] = useState([]);
+    const [pending, setPending] = useState(true);
+
     useEffect(() => {
         fetch('/.netlify/functions/practices')
             .then(res => res.json())
@@ -10,6 +13,7 @@ export default function Trainingen(props) {
                 if(data.status === 'ok') {
                     setPractices(data.practices);
                 }
+                setPending(false);
             })
     }, []);
 
@@ -29,6 +33,12 @@ export default function Trainingen(props) {
 
     return (
         <>
+            { pending &&
+                <div style={{textAlign: 'center', paddingTop: '30%'}}>
+                    <CircularProgress /> 
+                </div>
+            }
+                    
             {
                 practices.map(practice => {
                     return <Training practice={practice} key={practice.id} onClick={enroll}/>;
