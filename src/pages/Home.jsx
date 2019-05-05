@@ -4,7 +4,7 @@ import Header from '../components/Header';
 export default function Home(props) {
     return (
         <>
-            <Header />
+            <Header title="Trainingen" />
             Hello world
         </>
     )
