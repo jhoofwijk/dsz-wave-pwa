@@ -29,6 +29,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "cheerio": "^1.0.0-rc.3",
     "express": "^4.16.4",
     "http-proxy-middleware": "^0.19.1",
     "netlify-lambda": "^1.4.7",
