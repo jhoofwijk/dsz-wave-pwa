@@ -8,5 +8,4 @@ export default function Home(props) {
             Hello world
         </>
     )
-
 }
