@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Training from './Training';
 
 export default function Trainingen(props) {
@@ -13,11 +13,25 @@ export default function Trainingen(props) {
             })
     }, []);
 
+    const user = {
+        name: "Jorn",
+        email: "jorn@jornhub.nl",
+    };
+
+    const enroll = useCallback((practice) => {
+        const enrollingBody = {
+            ...user,
+            id: practice.id,
+        };
+        
+        console.log(enrollingBody);
+    }, []);
+
     return (
         <>
             {
                 practices.map(practice => {
-                    return <Training practice={practice} key={practice.id}/>;
+                    return <Training practice={practice} key={practice.id} onClick={enroll}/>;
                 })
             }
         </>
