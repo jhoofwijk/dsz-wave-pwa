@@ -2,7 +2,8 @@ node_modules/
 dist/
 .cache/
 .vscode/
-built-lambda
+built-lambda/
 
 package-lock.json
+TODO
 
