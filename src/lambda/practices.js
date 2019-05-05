@@ -11,6 +11,7 @@ export function handler(event, context, callback) {
       enrolled: 15,
       allowed: 40,
       id: 4123,
+      enrollPossible: true,
     }
   ];
 
