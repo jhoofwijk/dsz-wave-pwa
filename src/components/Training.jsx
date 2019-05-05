@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardContent } from '@material-ui/core';
 
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 
 export default function Training(props) {
