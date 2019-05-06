@@ -2,9 +2,12 @@ import React, {useState, useEffect, useCallback} from 'react';
 import Training from './Training';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import MySnackbar from './Snackbars';
+
 export default function Trainingen(props) {
     const [practices, setPractices] = useState([]);
     const [pending, setPending] = useState(true);
+    const [snackbarMessage, setSnackbar] = useState(false);
 
     useEffect(() => {
         fetch('/.netlify/functions/practices')
@@ -27,7 +30,8 @@ export default function Trainingen(props) {
             ...user,
             id: practice.id,
         };
-        
+        setPending(true);
+
         console.log(enrollingBody);
         fetch('/.netlify/functions/enroll', {
             method: 'POST',
@@ -36,13 +40,20 @@ export default function Trainingen(props) {
             },
             body: JSON.stringify(enrollingBody),
         })
-
+        .then(res => res.json())
+        .then(data => {
+          if(data.status === 'enrolled') {
+            setPractices(data.practices);
+          }
+          setPending(false);
+          setSnackbar(data.message);
+        });
     }, []);
 
     return (
         <>
             { pending &&
-                <div style={{textAlign: 'center', paddingTop: '30%'}}>
+                <div style={{textAlign: 'center', paddingTop: '30vh'}}>
                     <CircularProgress /> 
                 </div>
             }
@@ -52,6 +63,13 @@ export default function Trainingen(props) {
                     return <Training practice={practice} key={practice.id} onClick={enroll}/>;
                 })
             }
+
+            <MySnackbar 
+              message={snackbarMessage} 
+              open={snackbarMessage !== false} 
+              onClose={() => setSnackbar(false)}
+              variant="error"
+            />
         </>
     );
 }
