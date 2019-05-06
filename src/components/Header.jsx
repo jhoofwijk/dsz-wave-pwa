@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -31,7 +30,7 @@ function Header(props) {
             <MenuIcon />
           </IconButton> */}
           <Typography variant="h6" color="secondary" className={classes.grow}>
-            {props.title}
+            {props.title} (Beta {process.env.VERSION})
           </Typography>
           {/* <Button color="inherit">Login</Button> */}
         </Toolbar>
