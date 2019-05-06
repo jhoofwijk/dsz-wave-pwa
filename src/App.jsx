@@ -1,7 +1,11 @@
+
 import React, { useEffect } from 'react';
 import Home from './pages/Home';
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 
 const theme = createMuiTheme({
   palette: {
@@ -13,6 +17,7 @@ const theme = createMuiTheme({
         main: '#FFFF00',
     },
   },
+  spacing: 8,
 });
 
 export default function App(props) {
@@ -22,7 +27,9 @@ export default function App(props) {
 
     return (
         <MuiThemeProvider theme={theme}>
-            <Home />
+            <ThemeProvider theme={theme}>
+                <Home />
+            </ThemeProvider>
         </MuiThemeProvider>
     );
 }
