@@ -79,8 +79,10 @@ function getVariant(message) {
   switch(message) {
     case 'De training is vol.':
       return 'error'
-    case 'Succesvol ingeschreven':
+    case 'Inschrijving succesvol.':
       return 'success';
+    case 'Je hebt je al ingeschreven voor deze training.':
+      return 'warning';
     default:
       return 'info';
   }
