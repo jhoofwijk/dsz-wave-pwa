@@ -10,7 +10,7 @@ export function handler(event, context, callback) {
       const $ = cheerio.load(body);
       const practices = $('.inschrijven-breed tbody tr').map((i, row) => {
         let cols = $(row).find('td').map((i, col) => {
-          return $(col).text();
+          return $(col).html();
         }).get();
         if(cols.length < 6) {
           return null;
@@ -22,6 +22,12 @@ export function handler(event, context, callback) {
         const allowed = Number(cols[4].split('/')[1]);
         const enrollPossible = cols[5] !== '---';
 
+        let trainingId = -1;
+        console.log(cols);
+        if(enrollPossible) {
+          trainingId = Number($(cols[5]).attr('name').substr(9));
+        }
+
         return {
           location: cols[0],
           day: cols[1],
@@ -31,7 +37,7 @@ export function handler(event, context, callback) {
           enrolled,
           allowed,
           enrollPossible,
-          id: -1, // TODO fetch the correct id
+          id: trainingId,
         };
       }).get();
 

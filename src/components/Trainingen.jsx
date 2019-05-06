@@ -29,6 +29,14 @@ export default function Trainingen(props) {
         };
         
         console.log(enrollingBody);
+        fetch('/.netlify/functions/enroll', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(enrollingBody),
+        })
+
     }, []);
 
     return (
