@@ -78,6 +78,7 @@ export default function Trainingen(props) {
 function getVariant(message) {
   switch(message) {
     case 'De training is vol.':
+    case 'Inschrijven is voor deze training gesloten.':
       return 'error'
     case 'Inschrijving succesvol.':
       return 'success';
