@@ -12,6 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/styles';
+import grey from '@material-ui/core/colors/grey';
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -28,7 +29,7 @@ const useStyles1 = makeStyles(theme => ({
     backgroundColor: theme.palette.error.dark,
   },
   info: {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: grey,
   },
   warning: {
     backgroundColor: amber[700],
@@ -77,13 +78,6 @@ function MySnackbarContentWrapper(props) {
   );
 }
 
-// MySnackbarContentWrapper.propTypes = {
-//   className: PropTypes.string,
-//   message: PropTypes.node,
-//   onClose: PropTypes.func,
-//   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
-// };
-
 function CustomizedSnackbars(props) {
   const {open, onClose, message, variant} = props;
   
@@ -104,26 +98,6 @@ function CustomizedSnackbars(props) {
           message={message}
         />
       </Snackbar>
-      {/* <MySnackbarContentWrapper
-        variant="error"
-        className={classes.margin}
-        message="This is an error message!"
-      />
-      <MySnackbarContentWrapper
-        variant="warning"
-        className={classes.margin}
-        message="This is a warning message!"
-      />
-      <MySnackbarContentWrapper
-        variant="info"
-        className={classes.margin}
-        message="This is an information message!"
-      />
-      <MySnackbarContentWrapper
-        variant="success"
-        className={classes.margin}
-        message="This is a success message!"
-      /> */}
     </div>
   );
 }

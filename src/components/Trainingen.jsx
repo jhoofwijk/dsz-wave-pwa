@@ -80,7 +80,7 @@ function getVariant(message) {
     case 'De training is vol.':
       return 'error'
     case 'Succesvol ingeschreven':
-      return 'succes';
+      return 'success';
     default:
       return 'info';
   }
