@@ -50,6 +50,7 @@ export default function Trainingen(props) {
         });
     }, []);
 
+
     return (
         <>
             { pending &&
@@ -68,9 +69,19 @@ export default function Trainingen(props) {
               message={snackbarMessage} 
               open={snackbarMessage !== false} 
               onClose={() => setSnackbar(false)}
-              variant="error"
+              variant={getVariant(snackbarMessage)}
             />
         </>
     );
 }
 
+function getVariant(message) {
+  switch(message) {
+    case 'De training is vol.':
+      return 'error'
+    case 'Succesvol ingeschreven':
+      return 'succes';
+    default:
+      return 'info';
+  }
+}
