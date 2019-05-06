@@ -2,9 +2,10 @@
 import React, { useEffect } from 'react';
 import Home from './pages/Home';
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
-import { ThemeProvider } from '@material-ui/styles';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 
 const theme = createMuiTheme({
   palette: {
