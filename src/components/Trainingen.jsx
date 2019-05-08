@@ -54,7 +54,7 @@ export default function Trainingen(props) {
     return (
         <>
             { pending &&
-                <div style={{textAlign: 'center', paddingTop: '30vh'}}>
+                <div style={{textAlign: 'center', paddingTop: '30vh', position: 'fixed', width: '100vw'}}>
                     <CircularProgress /> 
                 </div>
             }
