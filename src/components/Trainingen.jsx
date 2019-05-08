@@ -5,11 +5,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import MySnackbar from './Snackbars';
 
+import WifiOff from '@material-ui/icons/WifiOff';
+
 export default function Trainingen(props) {
     const [practices, setPractices] = useState([]);
     const [pending, setPending] = useState(true);
     const [snackbarMessage, setSnackbar] = useState(false);
     const [user, setUser] = useState({});
+    const [networkError, setNetworkerror] = useState(false);
 
     useEffect(() => {
         fetch('/.netlify/functions/practices')
@@ -20,6 +23,10 @@ export default function Trainingen(props) {
                 }
                 setPending(false);
             })
+            .catch(() => {
+                setPending(false);
+                setNetworkerror(true);
+            });
     }, []);
 
     useEffect(() => {
@@ -70,6 +77,14 @@ export default function Trainingen(props) {
                 practices.map(practice => {
                     return <Training practice={practice} key={practice.id} onClick={enroll}/>;
                 })
+            }
+
+            {
+              networkError &&
+                <div style={{textAlign: 'center', paddingTop: '10vh'}}>
+                  <WifiOff style={{width: '30%', height: '30%', color: 'rgba(0,0,0,0.1)'}}/><br/>
+                  No internet connection
+                </div>
             }
 
             <MySnackbar 
