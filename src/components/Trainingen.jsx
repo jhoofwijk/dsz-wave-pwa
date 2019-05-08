@@ -1,13 +1,18 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import { get } from 'idb-keyval';
 import Training from './Training';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import MySnackbar from './Snackbars';
 
+import WifiOff from '@material-ui/icons/WifiOff';
+
 export default function Trainingen(props) {
     const [practices, setPractices] = useState([]);
     const [pending, setPending] = useState(true);
     const [snackbarMessage, setSnackbar] = useState(false);
+    const [user, setUser] = useState({});
+    const [networkError, setNetworkerror] = useState(false);
 
     useEffect(() => {
         fetch('/.netlify/functions/practices')
@@ -18,12 +23,21 @@ export default function Trainingen(props) {
                 }
                 setPending(false);
             })
+            .catch(() => {
+                setPending(false);
+                setNetworkerror(true);
+            });
     }, []);
 
-    const user = {
-        name: "Jorn",
-        email: "jorn@jornhub.nl",
-    };
+    useEffect(() => {
+      Promise.all([get('settings.name'), get('settings.email')])
+      .then(([name, email]) => {
+        setUser({
+          name,
+          email,
+        });
+      });
+    }, [])
 
     const enroll = useCallback((practice) => {
         const enrollingBody = {
@@ -54,7 +68,7 @@ export default function Trainingen(props) {
     return (
         <>
             { pending &&
-                <div style={{textAlign: 'center', paddingTop: '30vh'}}>
+                <div style={{textAlign: 'center', paddingTop: '30vh', position: 'fixed', width: '100vw'}}>
                     <CircularProgress /> 
                 </div>
             }
@@ -65,8 +79,16 @@ export default function Trainingen(props) {
                 })
             }
 
+            {
+              networkError &&
+                <div style={{textAlign: 'center', paddingTop: '10vh'}}>
+                  <WifiOff style={{width: '30%', height: '30%', color: 'rgba(0,0,0,0.1)'}}/><br/>
+                  No internet connection
+                </div>
+            }
+
             <MySnackbar 
-              message={snackbarMessage} 
+              message={translation(snackbarMessage)} 
               open={snackbarMessage !== false} 
               onClose={() => setSnackbar(false)}
               variant={getVariant(snackbarMessage)}
@@ -88,3 +110,19 @@ function getVariant(message) {
       return 'info';
   }
 }
+
+function translation(message) {
+  switch(message) {
+    case 'De training is vol.':
+      return 'This practice is full';
+    case 'Inschrijven is voor deze training gesloten.':
+      return 'Enrollment is closed';
+    case 'Inschrijving succesvol.':
+      return 'Succesfully enrolled';
+    case 'Je hebt je al ingeschreven voor deze training.':
+      return 'Already enrolled';
+    default:
+      return message;
+  }
+}
+

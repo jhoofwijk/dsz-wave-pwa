@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
 
+import { Link } from "react-router-dom";
+
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -29,10 +32,12 @@ function Header(props) {
           {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton> */}
+
+          <Link to='/'>Home</Link>
           <Typography variant="h6" color="secondary" className={classes.grow}>
             {props.title} (Beta {process.env.VERSION})
           </Typography>
-          {/* <Button color="inherit">Login</Button> */}
+          <Link to='/settings/'>Settings</Link>
         </Toolbar>
       </AppBar>
     </div>
