@@ -21,10 +21,6 @@ const theme = createMuiTheme({
 });
 
 export default function App(props) {
-    useEffect(() => {
-        document.getElementById('shell').style.opacity = 0;
-    }, []);
-
     return (
         <MuiThemeProvider theme={theme}>
             <ThemeProvider theme={theme}>
