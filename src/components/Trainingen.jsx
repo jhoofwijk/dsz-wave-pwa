@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import { get } from 'idb-keyval';
 import Training from './Training';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -8,6 +9,7 @@ export default function Trainingen(props) {
     const [practices, setPractices] = useState([]);
     const [pending, setPending] = useState(true);
     const [snackbarMessage, setSnackbar] = useState(false);
+    const [user, setUser] = useState({});
 
     useEffect(() => {
         fetch('/.netlify/functions/practices')
@@ -20,10 +22,15 @@ export default function Trainingen(props) {
             })
     }, []);
 
-    const user = {
-        name: "Jorn",
-        email: "jorn@jornhub.nl",
-    };
+    useEffect(() => {
+      Promise.all([get('settings.name'), get('settings.email')])
+      .then(([name, email]) => {
+        setUser({
+          name,
+          email,
+        });
+      });
+    }, [])
 
     const enroll = useCallback((practice) => {
         const enrollingBody = {
