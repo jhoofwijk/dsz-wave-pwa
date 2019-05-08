@@ -66,7 +66,7 @@ export default function Trainingen(props) {
             }
 
             <MySnackbar 
-              message={snackbarMessage} 
+              message={translation(snackbarMessage)} 
               open={snackbarMessage !== false} 
               onClose={() => setSnackbar(false)}
               variant={getVariant(snackbarMessage)}
@@ -88,3 +88,19 @@ function getVariant(message) {
       return 'info';
   }
 }
+
+function translation(message) {
+  switch(message) {
+    case 'De training is vol.':
+      return 'This practice is full';
+    case 'Inschrijven is voor deze training gesloten.':
+      return 'Enrollment is closed';
+    case 'Inschrijving succesvol.':
+      return 'Succesfully enrolled';
+    case 'Je hebt je al ingeschreven voor deze training.':
+      return 'Already enrolled';
+    default:
+      return message;
+  }
+}
+
