@@ -1,23 +1,32 @@
-import cheerio from 'cheerio';
-import qs from 'qs';
-const fetch = require('node-fetch');
+import cheerio from "cheerio";
+import qs from "qs";
+const fetch = require("node-fetch");
 
 export function handler(event, context, callback) {
-  // console.log("queryStringParameters", event.queryStringParameters);
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+    callback(null, {
+      statusCode: 405,
+      body: "Method Not Allowed"
+    });
+    return;
   }
-    //   const params = qs.parse(event.body);
 
   let reqBody;
   try {
     reqBody = JSON.parse(event.body);
-    if(!reqBody.name || !reqBody.email || !reqBody.id || reqBody.id < 0) {
-      // throw new Error('Missing or invalid param');
-      return { statusCode: 400, body: 'Body has invalid format'};
+    if (!reqBody.name || !reqBody.email || !reqBody.id || reqBody.id < 0) {
+      callback(null, {
+        statusCode: 400,
+        body: "Body has invalid format"
+      });
+      return;
     }
-  } catch(e) {
-    return { statusCode: 400, body: 'Body has invalid format'};
+  } catch (e) {
+    callback(null, {
+      statusCode: 400,
+      body: "Body has invalid format"
+    });
+    return;
   }
 
   console.log(reqBody);
@@ -25,25 +34,11 @@ export function handler(event, context, callback) {
   const postBody = {
     naam: reqBody.name,
     email: reqBody.email,
-    [`training_${reqBody.id}`]: '+',
+    [`training_${reqBody.id}`]: "+"
   };
 
   console.log(postBody);
-
-  // callback(null, {
-  //   statusCode: 200,
-  //   body: JSON.stringify({status: 'ok'}),
-  // });
-
-  console.log( qs.stringify(postBody));
-  // fetch('https://www.dsz-wave.nl/trainingen', {
-  //     metod: 'POST',
-  //     headers: {
-  //         "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //     body: qs.stringify(postBody),
-  // })
-
+  console.log(qs.stringify(postBody));
 
   fetch("https://dsz-wave.nl/en/trainingen/", {
     credentials: "include",
@@ -64,54 +59,60 @@ export function handler(event, context, callback) {
     .then(res => res.text())
     .then(body => {
       const $ = cheerio.load(body);
-      const practices = $('.inschrijven-breed tbody tr').map((i, row) => {
-        let cols = $(row).find('td').map((i, col) => {
-          return $(col).html();
-        }).get();
-        if(cols.length < 6) {
-          return null;
-        }
+      const practices = $(".inschrijven-breed tbody tr")
+        .map((i, row) => {
+          let cols = $(row)
+            .find("td")
+            .map((i, col) => {
+              return $(col).html();
+            })
+            .get();
+          if (cols.length < 6) {
+            return null;
+          }
 
-        // console.log(body);
+          const start = cols[3].substring(0, 5);
+          const end = cols[3].substring(8, 13);
+          const enrolled = Number(cols[4].split("/")[0]);
+          const allowed = Number(cols[4].split("/")[1]);
+          const enrollPossible = cols[5] !== "---";
 
-        const start = cols[3].substring(0,  5);
-        const end   = cols[3].substring(8, 13);
-        const enrolled = Number(cols[4].split('/')[0]);
-        const allowed = Number(cols[4].split('/')[1]);
-        const enrollPossible = cols[5] !== '---';
+          let trainingId = -1;
+          console.log(cols);
+          if (enrollPossible) {
+            trainingId = Number(
+              $(cols[5])
+                .attr("name")
+                .substr(9)
+            );
+          }
 
-        let trainingId = -1;
-        console.log(cols);
-        if(enrollPossible) {
-          trainingId = Number($(cols[5]).attr('name').substr(9));
-        }
+          return {
+            location: cols[0],
+            day: cols[1],
+            date: cols[2],
+            start,
+            end,
+            enrolled,
+            allowed,
+            enrollPossible,
+            id: trainingId
+          };
+        })
+        .get();
 
-        return {
-          location: cols[0],
-          day: cols[1],
-          date: cols[2],
-          start,
-          end,
-          enrolled,
-          allowed,
-          enrollPossible,
-          id: trainingId,
-        };
-      }).get();
-
-      const msg = $('#statusspan').text();
+      const msg = $("#statusspan").text();
       const res = {
-        status: 'enrolled',
-        message: msg || '',
-        practices,
-      }
+        status: "enrolled",
+        message: msg || "",
+        practices
+      };
 
-      console.log('msg=', msg);
-
+      console.log("msg=", msg);
 
       callback(null, {
         statusCode: 200,
-        body: JSON.stringify(res),
-      })
+        body: JSON.stringify(res)
+      });
     });
-};
+}
