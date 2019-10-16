@@ -1,6 +1,6 @@
 {
   "name": "wave-app",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "App for subscribing to practices",
   "main": "server/index.js",
   "scripts": {
