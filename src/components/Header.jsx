@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Home from "@material-ui/icons/Home";
 
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const styles = {
   root: {
@@ -18,6 +18,7 @@ const styles = {
     flexGrow: 1,
   },
   menuButton: {
+    color: "white",
     marginLeft: -12,
     marginRight: 20,
   },
@@ -29,17 +30,21 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" href={"/"}>
-            <Home />
-          </IconButton>
+          <Link to="/">
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+              <Home />
+            </IconButton>
+          </Link>
 
           <Typography variant="h6" color="secondary" className={classes.grow}>
             {props.title} (Beta {process.env.VERSION})
           </Typography>
 
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" href={"/settings/"}>
-            <AccountCircle />
-          </IconButton>
+          <Link to="/settings/">
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+              <AccountCircle />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     </div>
