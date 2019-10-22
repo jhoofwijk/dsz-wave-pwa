@@ -6,6 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import MySnackbar from "./Snackbars";
 
 import WifiOff from "@material-ui/icons/WifiOff";
+import User from "./User";
 
 export default function Trainingen(props) {
   const [practices, setPractices] = useState([]);
@@ -30,21 +31,19 @@ export default function Trainingen(props) {
   }, []);
 
   useEffect(() => {
-    Promise.all([get("settings.name"), get("settings.email")]).then(
-      ([name, email]) => {
-        setUser({
-          name,
-          email
-        });
-      }
-    );
+    Promise.all([get("settings.name"), get("settings.email")]).then(([name, email]) => {
+      setUser({
+        name,
+        email,
+      });
+    });
   }, []);
 
   const enroll = useCallback(
     practice => {
       const enrollingBody = {
         ...user,
-        id: practice.id
+        id: practice.id,
       };
       setPending(true);
 
@@ -52,9 +51,9 @@ export default function Trainingen(props) {
       fetch("/.netlify/functions/enroll", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(enrollingBody)
+        body: JSON.stringify(enrollingBody),
       })
         .then(res => res.json())
         .then(data => {
@@ -70,14 +69,14 @@ export default function Trainingen(props) {
 
   return (
     <>
-      {JSON.stringify(user)}
+      <User user={user} />
       {pending && (
         <div
           style={{
             textAlign: "center",
             paddingTop: "30vh",
             position: "fixed",
-            width: "100vw"
+            width: "100vw",
           }}
         >
           <CircularProgress />
@@ -85,16 +84,12 @@ export default function Trainingen(props) {
       )}
 
       {practices.map(practice => {
-        return (
-          <Training practice={practice} key={practice.id} onClick={enroll} />
-        );
+        return <Training practice={practice} key={practice.id} onClick={enroll} />;
       })}
 
       {networkError && (
         <div style={{ textAlign: "center", paddingTop: "10vh" }}>
-          <WifiOff
-            style={{ width: "30%", height: "30%", color: "rgba(0,0,0,0.1)" }}
-          />
+          <WifiOff style={{ width: "30%", height: "30%", color: "rgba(0,0,0,0.1)" }} />
           <br />
           No internet connection
         </div>
