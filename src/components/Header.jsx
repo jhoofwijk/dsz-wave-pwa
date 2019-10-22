@@ -29,21 +29,21 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Link to="/">
+          {/* <Link to="/">
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <Home />
             </IconButton>
-          </Link>
+          </Link> */}
 
           <Typography variant="h6" color="secondary" className={classes.grow}>
             {props.title}
           </Typography>
 
-          <Link to="/settings/">
+          {/* <Link to="/settings/">
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" style={{ marginRight: 0 }}>
               <AccountCircle />
             </IconButton>
-          </Link>
+          </Link> */}
         </Toolbar>
       </AppBar>
 
