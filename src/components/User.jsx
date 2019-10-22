@@ -25,9 +25,9 @@ export default function User(props) {
           <CardContent>
             <div style={{ display: "flex" }}>
               <div style={{ flexGrow: 1 }}>
-                Name: {name}
+                Name: {name || "???"}
                 <br />
-                Email: {email}
+                Email: {email || "???"}
               </div>
               <div>
                 <Edit />

@@ -8,16 +8,22 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+const primary = "#001aff";
+const secondary = "#ffff00";
+
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#001aff",
-      // contrastText: 'yellow',
+      main: primary,
+      contrastText: secondary,
     },
     secondary: {
-      main: "#FFFF00",
+      main: secondary,
     },
   },
+  // raisedButton: {
+  //   primaryTextColor: secondary,
+  // },
   spacing: 8,
 });
 
