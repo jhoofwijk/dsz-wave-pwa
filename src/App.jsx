@@ -21,9 +21,6 @@ const theme = createMuiTheme({
       main: secondary,
     },
   },
-  // raisedButton: {
-  //   primaryTextColor: secondary,
-  // },
   spacing: 8,
 });
 
