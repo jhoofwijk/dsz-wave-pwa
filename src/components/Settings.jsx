@@ -13,7 +13,6 @@ export default function Settings(props) {
       console.log(value);
       if (value !== undefined && value !== null) {
         setName(value);
-      }
     });
 
     localforage.getItem("settings.email").then(value => {
