@@ -1,6 +1,6 @@
 {
   "name": "wave-app",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "description": "App for subscribing to practices",
   "main": "server/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     {
       "webpack": false,
       "path": "dist/*.js",
-      "limit": "5s"
+      "limit": "6s"
     }
   ],
   "cache": {
@@ -40,7 +40,7 @@
     "classnames": "^2.2.6",
     "express": "^4.16.4",
     "http-proxy-middleware": "^0.19.1",
-    "idb-keyval": "^3.2.0",
+    "localforage": "^1.7.3",
     "netlify-lambda": "^1.4.7",
     "npm-run-all": "^4.1.5",
     "pages": "0.0.16",

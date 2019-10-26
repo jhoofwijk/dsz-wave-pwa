@@ -1,4 +1,4 @@
-import { get, set } from "idb-keyval";
+import localforage from "localforage";
 import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
@@ -9,15 +9,14 @@ export default function Settings(props) {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    get("settings.name").then(value => {
-      console.log(value);
-      if (value !== undefined) {
+    localforage.getItem("settings.name").then(value => {
+      if (value !== undefined && value !== null) {
         setName(value);
       }
     });
 
-    get("settings.email").then(value => {
-      if (value !== undefined) {
+    localforage.getItem("settings.email").then(value => {
+      if (value !== undefined && value !== null) {
         setEmail(value);
       }
     });
@@ -25,12 +24,12 @@ export default function Settings(props) {
 
   const handleName = event => {
     setName(event.target.value);
-    set("settings.name", event.target.value);
+    localforage.setItem("settings.name", event.target.value);
   };
 
   const handleEmail = event => {
     setEmail(event.target.value);
-    set("settings.email", event.target.value);
+    localforage.setItem("settings.email", event.target.value);
   };
 
   return (
