@@ -11,13 +11,13 @@ export default function Settings(props) {
   useEffect(() => {
     localforage.getItem("settings.name").then(value => {
       console.log(value);
-      if (value !== undefined) {
+      if (value !== undefined && value !== null) {
         setName(value);
       }
     });
 
     localforage.getItem("settings.email").then(value => {
-      if (value !== undefined) {
+      if (value !== undefined && value !== null) {
         setEmail(value);
       }
     });
