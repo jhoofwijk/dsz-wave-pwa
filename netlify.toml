@@ -2,3 +2,8 @@
   publish = "dist/"
   command = "npm run build"
   functions = "built-lambda"
+
+[[redirects]]
+  from = "/settings"
+  to = "/index.html"
+  status = 200
