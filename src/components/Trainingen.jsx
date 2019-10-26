@@ -62,6 +62,10 @@ export default function Trainingen(props) {
           }
           setPending(false);
           setSnackbar(data.message);
+        })
+        .catch(() => {
+          setPending(false);
+          setSnackbar("Failed to enroll");
         });
     },
     [user]
@@ -107,6 +111,7 @@ export default function Trainingen(props) {
 
 function getVariant(message) {
   switch (message) {
+    case "Failed to enroll":
     case "De training is vol.":
     case "Inschrijven is voor deze training gesloten.":
       return "error";
