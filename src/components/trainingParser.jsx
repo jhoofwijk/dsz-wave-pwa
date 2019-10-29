@@ -91,7 +91,10 @@ export function useTrainingen() {
   const [pending, setPending] = useState(true);
   const [networkError, setNetworkError] = useState(false);
 
-  useEffect(() => {
+  const refresh = () => {
+    setPending(true);
+    setPractices([]);
+    setNetworkError(false);
     fetch("/proxy/trainingen")
       .then(res => res.text())
       .then(body => {
@@ -100,9 +103,25 @@ export function useTrainingen() {
       .catch(() => {
         setNetworkError(true);
       })
-      .then(() => {
+      .finally(() => {
         setPending(false);
       });
+  };
+
+  useEffect(() => {
+    refresh();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        refresh();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   const enroll = useCallback((practice, user) => {
