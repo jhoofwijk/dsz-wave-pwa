@@ -71,9 +71,9 @@ export default function Trainingen(props) {
         </div>
       )}
 
-      {practices.map(practice => {
-        return <Training practice={practice} key={practice.id} onClick={enroll} />;
-      })}
+      {practices.map(practice => (
+        <Training practice={practice} key={practice.id} onClick={enroll} />
+      ))}
 
       {networkError && (
         <div style={{ textAlign: "center", paddingTop: "10vh" }}>
