@@ -6,7 +6,7 @@ export function handler(event, context, callback) {
   if (event.httpMethod !== "POST") {
     callback(null, {
       statusCode: 405,
-      body: "Method Not Allowed"
+      body: "Method Not Allowed",
     });
     return;
   }
@@ -17,14 +17,14 @@ export function handler(event, context, callback) {
     if (!reqBody.name || !reqBody.email || !reqBody.id || reqBody.id < 0) {
       callback(null, {
         statusCode: 400,
-        body: "Body has invalid format"
+        body: "Body has invalid format",
       });
       return;
     }
   } catch (e) {
     callback(null, {
       statusCode: 400,
-      body: "Body has invalid format"
+      body: "Body has invalid format",
     });
     return;
   }
@@ -34,7 +34,7 @@ export function handler(event, context, callback) {
   const postBody = {
     naam: reqBody.name,
     email: reqBody.email,
-    [`training_${reqBody.id}`]: "+"
+    [`training_${reqBody.id}`]: "+",
   };
 
   console.log(postBody);
@@ -48,13 +48,13 @@ export function handler(event, context, callback) {
       "accept-language": "en-US,en;q=0.9,nl;q=0.8,fr;q=0.7",
       "cache-control": "max-age=0",
       "content-type": "application/x-www-form-urlencoded",
-      "upgrade-insecure-requests": "1"
+      "upgrade-insecure-requests": "1",
     },
     referrer: "https://dsz-wave.nl/en/trainingen/",
     referrerPolicy: "no-referrer-when-downgrade",
     body: qs.stringify(postBody),
     method: "POST",
-    mode: "cors"
+    mode: "cors",
   })
     .then(res => res.text())
     .then(body => {
@@ -96,7 +96,7 @@ export function handler(event, context, callback) {
             enrolled,
             allowed,
             enrollPossible,
-            id: trainingId
+            id: trainingId,
           };
         })
         .get();
@@ -105,14 +105,14 @@ export function handler(event, context, callback) {
       const res = {
         status: "enrolled",
         message: msg || "",
-        practices
+        practices,
       };
 
       console.log("msg=", msg);
 
       callback(null, {
         statusCode: 200,
-        body: JSON.stringify(res)
+        body: JSON.stringify(res),
       });
     });
 }

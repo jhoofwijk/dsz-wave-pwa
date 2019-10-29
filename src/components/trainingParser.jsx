@@ -1,11 +1,20 @@
-import { useEffect, useState } from "react";
+import qs from "qs";
+import { useEffect, useState, useCallback } from "react";
+
+function getStatusMessage(body) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(body, "text/html");
+
+  const status = xmlDoc.querySelector("#statusspan");
+
+  return status.innerText;
+}
 
 function parseBody(body) {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(body, "text/html");
 
   const r = xmlDoc.querySelectorAll(".inschrijven-breed tbody tr");
-  console.log(r);
 
   const rows = [];
   r.forEach(row => {
@@ -45,6 +54,38 @@ function parseBody(body) {
   return rows;
 }
 
+function postEnroll(practice, user) {
+  if (!user.name || !user.email) {
+    return Promise.reject("No name or email provided");
+  }
+
+  if (practice.id <= 0 || practice === undefined || practice === "") {
+    return Promise.reject("Cannot enroll for this practice");
+  }
+
+  const postBody = {
+    naam: user.name,
+    email: user.email,
+    [`training_${practice.id}`]: "+",
+  };
+
+  return fetch("/proxy/trainingen", {
+    credentials: "include",
+    headers: {
+      accept:
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+      "accept-language": "en-US,en;q=0.9,nl;q=0.8,fr;q=0.7",
+      "cache-control": "max-age=0",
+      "content-type": "application/x-www-form-urlencoded",
+      "upgrade-insecure-requests": "1",
+    },
+    referrer: "https://dsz-wave.nl/trainingen/",
+    referrerPolicy: "no-referrer-when-downgrade",
+    body: qs.stringify(postBody),
+    method: "POST",
+  }).then(res => res.text());
+}
+
 export function useTrainingen() {
   const [practices, setPractices] = useState([]);
   const [pending, setPending] = useState(true);
@@ -64,9 +105,22 @@ export function useTrainingen() {
       });
   }, []);
 
+  const enroll = useCallback((practice, user) => {
+    setPending(true);
+    return postEnroll(practice, user)
+      .then(body => {
+        setPractices(parseBody(body));
+        return getStatusMessage(body);
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  }, []);
+
   return {
     practices,
     pending,
     networkError,
+    enroll,
   };
 }

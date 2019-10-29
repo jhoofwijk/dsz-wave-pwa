@@ -12,7 +12,7 @@ import { useTrainingen } from "./trainingParser";
 export default function Trainingen(props) {
   const [snackbarMessage, setSnackbar] = useState(false);
   const [user, setUser] = useState({});
-  const { practices, pending, networkError } = useTrainingen();
+  const { practices, pending, networkError, enroll } = useTrainingen();
 
   useEffect(() => {
     Promise.all([localforage.getItem("settings.name"), localforage.getItem("settings.email")]).then(([name, email]) => {
@@ -23,32 +23,15 @@ export default function Trainingen(props) {
     });
   }, []);
 
-  const enroll = useCallback(
+  const myEnroll = useCallback(
     practice => {
-      const enrollingBody = {
-        ...user,
-        id: practice.id,
-      };
-      setPending(true);
-
-      console.log(enrollingBody);
-      fetch("/.netlify/functions/enroll", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(enrollingBody),
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "enrolled") {
-            setPractices(data.practices);
-          }
-          setPending(false);
-          setSnackbar(data.message);
+      console.log(practice);
+      enroll(practice, user)
+        .then(message => {
+          console.log(message);
+          setSnackbar(message);
         })
         .catch(() => {
-          setPending(false);
           setSnackbar("Failed to enroll");
         });
     },
@@ -72,7 +55,7 @@ export default function Trainingen(props) {
       )}
 
       {practices.map(practice => (
-        <Training practice={practice} key={practice.id} onClick={enroll} />
+        <Training practice={practice} key={practice.id} onClick={myEnroll} />
       ))}
 
       {networkError && (
