@@ -7,28 +7,12 @@ import MySnackbar from "./Snackbars";
 
 import WifiOff from "@material-ui/icons/WifiOff";
 import User from "./User";
+import { useTrainingen } from "./trainingParser";
 
 export default function Trainingen(props) {
-  const [practices, setPractices] = useState([]);
-  const [pending, setPending] = useState(true);
   const [snackbarMessage, setSnackbar] = useState(false);
   const [user, setUser] = useState({});
-  const [networkError, setNetworkerror] = useState(false);
-
-  useEffect(() => {
-    fetch("/.netlify/functions/practices")
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "ok") {
-          setPractices(data.practices);
-        }
-        setPending(false);
-      })
-      .catch(() => {
-        setPending(false);
-        setNetworkerror(true);
-      });
-  }, []);
+  const { practices, pending, networkError, enroll } = useTrainingen();
 
   useEffect(() => {
     Promise.all([localforage.getItem("settings.name"), localforage.getItem("settings.email")]).then(([name, email]) => {
@@ -39,32 +23,15 @@ export default function Trainingen(props) {
     });
   }, []);
 
-  const enroll = useCallback(
+  const myEnroll = useCallback(
     practice => {
-      const enrollingBody = {
-        ...user,
-        id: practice.id,
-      };
-      setPending(true);
-
-      console.log(enrollingBody);
-      fetch("/.netlify/functions/enroll", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(enrollingBody),
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "enrolled") {
-            setPractices(data.practices);
-          }
-          setPending(false);
-          setSnackbar(data.message);
+      console.log(practice);
+      enroll(practice, user)
+        .then(message => {
+          console.log(message);
+          setSnackbar(message);
         })
         .catch(() => {
-          setPending(false);
           setSnackbar("Failed to enroll");
         });
     },
@@ -87,9 +54,9 @@ export default function Trainingen(props) {
         </div>
       )}
 
-      {practices.map(practice => {
-        return <Training practice={practice} key={practice.id} onClick={enroll} />;
-      })}
+      {practices.map(practice => (
+        <Training practice={practice} key={practice.id} onClick={myEnroll} />
+      ))}
 
       {networkError && (
         <div style={{ textAlign: "center", paddingTop: "10vh" }}>

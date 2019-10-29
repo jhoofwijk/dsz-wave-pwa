@@ -7,3 +7,9 @@
   from = "/settings"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "/proxy/trainingen"
+  to = "https://dsz-wave.nl/trainingen/"
+  status = 200
+  force = true
