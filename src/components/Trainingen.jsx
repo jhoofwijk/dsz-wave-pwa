@@ -7,28 +7,12 @@ import MySnackbar from "./Snackbars";
 
 import WifiOff from "@material-ui/icons/WifiOff";
 import User from "./User";
+import { useTrainingen } from "./trainingParser";
 
 export default function Trainingen(props) {
-  const [practices, setPractices] = useState([]);
-  const [pending, setPending] = useState(true);
   const [snackbarMessage, setSnackbar] = useState(false);
   const [user, setUser] = useState({});
-  const [networkError, setNetworkerror] = useState(false);
-
-  useEffect(() => {
-    fetch("/.netlify/functions/practices")
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "ok") {
-          setPractices(data.practices);
-        }
-        setPending(false);
-      })
-      .catch(() => {
-        setPending(false);
-        setNetworkerror(true);
-      });
-  }, []);
+  const { practices, pending, networkError } = useTrainingen();
 
   useEffect(() => {
     Promise.all([localforage.getItem("settings.name"), localforage.getItem("settings.email")]).then(([name, email]) => {
